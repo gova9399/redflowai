@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calculator, Download, Share2, FileExport } from 'lucide-react';
+import { Calculator, Download, Share2, FileText } from 'lucide-react';
 
 interface LandingPageProps {
   onGetStarted: () => void;
