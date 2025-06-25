@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -117,7 +118,7 @@ const ProductCalculator: React.FC<ProductCalculatorProps> = ({ onBack }) => {
               <div className="space-y-2">
                 <Label htmlFor="unitPrice" className="flex items-center gap-2 text-sm font-medium text-gray-700">
                   <DollarSign className="w-4 h-4" />
-                  Unit Price ($)
+                  Unit Price (₹)
                 </Label>
                 <Input
                   id="unitPrice"
@@ -189,7 +190,7 @@ const ProductCalculator: React.FC<ProductCalculatorProps> = ({ onBack }) => {
             <div className="space-y-2">
               <Label htmlFor="travelingCost" className="flex items-center gap-2 text-sm font-medium text-gray-700">
                 <Truck className="w-4 h-4" />
-                Traveling Cost ($)
+                Traveling Cost (₹)
               </Label>
               <Input
                 id="travelingCost"
