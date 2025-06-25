@@ -2,26 +2,31 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calculator, TrendingUp, Minus, DollarSign } from 'lucide-react';
+import { TrendingUp, Minus, DollarSign, Percent } from 'lucide-react';
 
 interface ProductData {
   productId: string;
   materialName: string;
   unitPrice: number;
-  gst: number;
+  gstPercentage: number;
   travelingCost: number;
   quantity: number;
+  discountPercentage: number;
 }
 
 interface CalculationResultProps {
   productData: ProductData;
   totalPrice: number;
+  discountAmount: number;
+  gstAmount: number;
   finalAmount: number;
 }
 
 const CalculationResult: React.FC<CalculationResultProps> = ({ 
   productData, 
-  totalPrice, 
+  totalPrice,
+  discountAmount,
+  gstAmount,
   finalAmount 
 }) => {
   const formatCurrency = (amount: number) => {
@@ -31,6 +36,8 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
       minimumFractionDigits: 2,
     }).format(amount);
   };
+
+  const subtotalAfterDiscount = totalPrice - discountAmount;
 
   return (
     <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm">
@@ -66,6 +73,23 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
             </Badge>
           </div>
 
+          {productData.discountPercentage > 0 && (
+            <div className="border-l-4 border-orange-400 pl-4 space-y-2">
+              <h4 className="font-semibold text-gray-800 flex items-center gap-2">
+                <Percent className="w-4 h-4 text-orange-500" />
+                Discount ({productData.discountPercentage}%)
+              </h4>
+              <div className="flex justify-between text-sm">
+                <span>Discount Amount:</span>
+                <span className="text-orange-600">-{formatCurrency(discountAmount)}</span>
+              </div>
+              <div className="flex justify-between font-medium">
+                <span>After Discount:</span>
+                <span className="text-gray-800">{formatCurrency(subtotalAfterDiscount)}</span>
+              </div>
+            </div>
+          )}
+
           <div className="border-l-4 border-red-400 pl-4 space-y-2">
             <h4 className="font-semibold text-gray-800 flex items-center gap-2">
               <Minus className="w-4 h-4 text-red-500" />
@@ -73,8 +97,8 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
             </h4>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span>GST:</span>
-                <span className="text-red-600">-{formatCurrency(productData.gst)}</span>
+                <span>GST ({productData.gstPercentage}%):</span>
+                <span className="text-red-600">-{formatCurrency(gstAmount)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Traveling Cost:</span>
@@ -104,7 +128,10 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
 
           <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
             <p className="font-medium mb-1">Calculation Formula:</p>
-            <p>Final Amount = (Unit Price × Quantity) - GST - Traveling Cost</p>
+            <p>Step 1: Total = Unit Price × Quantity</p>
+            <p>Step 2: After Discount = Total - (Total × Discount %)</p>
+            <p>Step 3: GST = After Discount × GST %</p>
+            <p>Step 4: Final = After Discount - GST - Traveling Cost</p>
           </div>
         </div>
       </CardContent>
