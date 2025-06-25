@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, Minus, DollarSign, Percent } from 'lucide-react';
+import { TrendingUp, Minus, DollarSign, Percent, Package, Truck, Receipt } from 'lucide-react';
 
 interface ProductData {
   productId: string;
@@ -48,15 +48,43 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6 space-y-6">
-        {productData.productId && (
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-800 mb-2">Product Information</h3>
-            <div className="space-y-1 text-sm">
-              <p><span className="font-medium">ID:</span> {productData.productId}</p>
-              <p><span className="font-medium">Material:</span> {productData.materialName}</p>
+        {/* Full Product Details Section */}
+        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+          <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+            <Package className="w-5 h-5" />
+            Complete Product Information
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Product ID:</span>
+              <span className="text-gray-800">{productData.productId || 'Not specified'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Material Name:</span>
+              <span className="text-gray-800">{productData.materialName || 'Not specified'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Unit Price:</span>
+              <span className="text-gray-800">{formatCurrency(productData.unitPrice)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Quantity:</span>
+              <span className="text-gray-800">{productData.quantity} units</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Discount Rate:</span>
+              <span className="text-gray-800">{productData.discountPercentage}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">GST Rate:</span>
+              <span className="text-gray-800">{productData.gstPercentage}%</span>
+            </div>
+            <div className="flex justify-between md:col-span-2">
+              <span className="font-medium text-gray-600">Traveling Cost:</span>
+              <span className="text-gray-800">{formatCurrency(productData.travelingCost)}</span>
             </div>
           </div>
-        )}
+        </div>
 
         <div className="space-y-4">
           <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
@@ -97,11 +125,17 @@ const CalculationResult: React.FC<CalculationResultProps> = ({
             </h4>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span>GST ({productData.gstPercentage}%):</span>
+                <span className="flex items-center gap-1">
+                  <Receipt className="w-3 h-3" />
+                  GST ({productData.gstPercentage}%):
+                </span>
                 <span className="text-red-600">-{formatCurrency(gstAmount)}</span>
               </div>
               <div className="flex justify-between">
-                <span>Traveling Cost:</span>
+                <span className="flex items-center gap-1">
+                  <Truck className="w-3 h-3" />
+                  Traveling Cost:
+                </span>
                 <span className="text-red-600">-{formatCurrency(productData.travelingCost)}</span>
               </div>
             </div>
