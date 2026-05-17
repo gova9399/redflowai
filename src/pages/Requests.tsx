@@ -26,7 +26,7 @@ function RequestForm({ onSaved, onClose }: { onSaved: () => void; onClose: () =>
     e.preventDefault();
     setBusy(true);
     const { data, error } = await supabase.from("blood_requests")
-      .insert({ ...f, user_id: user!.id })
+      .insert({ ...f, user_id: user!.id } as any)
       .select("id").single();
     if (error) { setBusy(false); return toast.error(error.message); }
     // Trigger AI matching

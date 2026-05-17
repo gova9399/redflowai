@@ -46,7 +46,7 @@ export default function RequestDetail() {
   }
 
   async function setStatus(mid: string, status: string) {
-    const { error } = await supabase.from("matches").update({ status }).eq("id", mid);
+    const { error } = await supabase.from("matches").update({ status: status as any }).eq("id", mid);
     if (error) return toast.error(error.message);
     load();
   }
