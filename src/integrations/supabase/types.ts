@@ -14,7 +14,183 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blood_requests: {
+        Row: {
+          blood_group: Database["public"]["Enums"]["blood_group"]
+          city: string
+          created_at: string
+          hospital: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          notes: string | null
+          patient_name: string
+          status: Database["public"]["Enums"]["request_status"]
+          units_needed: number
+          updated_at: string
+          urgency: Database["public"]["Enums"]["urgency_level"]
+          user_id: string
+        }
+        Insert: {
+          blood_group: Database["public"]["Enums"]["blood_group"]
+          city: string
+          created_at?: string
+          hospital: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          patient_name: string
+          status?: Database["public"]["Enums"]["request_status"]
+          units_needed?: number
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["urgency_level"]
+          user_id: string
+        }
+        Update: {
+          blood_group?: Database["public"]["Enums"]["blood_group"]
+          city?: string
+          created_at?: string
+          hospital?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          notes?: string | null
+          patient_name?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          units_needed?: number
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["urgency_level"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      donors: {
+        Row: {
+          antigen_notes: string | null
+          blood_group: Database["public"]["Enums"]["blood_group"]
+          city: string
+          created_at: string
+          eligible: boolean
+          full_name: string
+          id: string
+          last_donation_date: string | null
+          latitude: number | null
+          longitude: number | null
+          phone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          antigen_notes?: string | null
+          blood_group: Database["public"]["Enums"]["blood_group"]
+          city: string
+          created_at?: string
+          eligible?: boolean
+          full_name: string
+          id?: string
+          last_donation_date?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          phone: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          antigen_notes?: string | null
+          blood_group?: Database["public"]["Enums"]["blood_group"]
+          city?: string
+          created_at?: string
+          eligible?: boolean
+          full_name?: string
+          id?: string
+          last_donation_date?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          phone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          compatibility_score: number
+          created_at: string
+          distance_km: number | null
+          donor_id: string
+          id: string
+          reasoning: string | null
+          request_id: string
+          status: Database["public"]["Enums"]["match_status"]
+          urgency_rank: number
+        }
+        Insert: {
+          compatibility_score?: number
+          created_at?: string
+          distance_km?: number | null
+          donor_id: string
+          id?: string
+          reasoning?: string | null
+          request_id: string
+          status?: Database["public"]["Enums"]["match_status"]
+          urgency_rank?: number
+        }
+        Update: {
+          compatibility_score?: number
+          created_at?: string
+          distance_km?: number | null
+          donor_id?: string
+          id?: string
+          reasoning?: string | null
+          request_id?: string
+          status?: Database["public"]["Enums"]["match_status"]
+          urgency_rank?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_donor_id_fkey"
+            columns: ["donor_id"]
+            isOneToOne: false
+            referencedRelation: "donors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "blood_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          organization: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          organization?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          organization?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +199,19 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      blood_group:
+        | "A+"
+        | "A-"
+        | "B+"
+        | "B-"
+        | "AB+"
+        | "AB-"
+        | "O+"
+        | "O-"
+        | "Bombay"
+      match_status: "pending" | "accepted" | "declined" | "completed"
+      request_status: "open" | "matched" | "fulfilled" | "cancelled"
+      urgency_level: "routine" | "urgent" | "critical"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +338,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      blood_group: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Bombay"],
+      match_status: ["pending", "accepted", "declined", "completed"],
+      request_status: ["open", "matched", "fulfilled", "cancelled"],
+      urgency_level: ["routine", "urgent", "critical"],
+    },
   },
 } as const
