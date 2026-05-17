@@ -16,8 +16,7 @@ const compatMap: Record<BloodGroup, BloodGroup[]> = {
 };
 
 export function isCompatible(donor: BloodGroup, patient: BloodGroup) {
-  if (patient === "Bombay") return donor === "Bombay";
-  if (donor === "Bombay") return patient === "Bombay";
+  if (patient === "Bombay" || donor === "Bombay") return donor === patient;
   return compatMap[donor]?.includes(patient) ?? false;
 }
 
