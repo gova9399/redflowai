@@ -156,13 +156,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "matches_donor_id_fkey"
-            columns: ["donor_id"]
-            isOneToOne: false
-            referencedRelation: "donors_directory"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "matches_request_id_fkey"
             columns: ["request_id"]
             isOneToOne: false
@@ -200,54 +193,10 @@ export type Database = {
       }
     }
     Views: {
-      donors_directory: {
-        Row: {
-          antigen_notes: string | null
-          blood_group: Database["public"]["Enums"]["blood_group"] | null
-          city: string | null
-          created_at: string | null
-          eligible: boolean | null
-          full_name: string | null
-          id: string | null
-          last_donation_date: string | null
-          latitude: number | null
-          longitude: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          antigen_notes?: string | null
-          blood_group?: Database["public"]["Enums"]["blood_group"] | null
-          city?: string | null
-          created_at?: string | null
-          eligible?: boolean | null
-          full_name?: string | null
-          id?: string | null
-          last_donation_date?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          antigen_notes?: string | null
-          blood_group?: Database["public"]["Enums"]["blood_group"] | null
-          city?: string | null
-          created_at?: string | null
-          eligible?: boolean | null
-          full_name?: string | null
-          id?: string | null
-          last_donation_date?: string | null
-          latitude?: number | null
-          longitude?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_my_donor_phone: { Args: { _donor_id: string }; Returns: string }
     }
     Enums: {
       blood_group:
