@@ -196,7 +196,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_my_donor_phone: { Args: { _donor_id: string }; Returns: string }
     }
     Enums: {
       blood_group:
