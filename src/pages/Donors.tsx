@@ -134,13 +134,16 @@ export default function Donors() {
                   {isRare(d.blood_group) && <Badge variant="secondary" className="bg-accent text-accent-foreground">Rare</Badge>}
                 </div>
               </div>
-              <div className="text-sm">📞 {d.phone}</div>
+              <div className="text-sm">📞 {mine ? d.phone ?? "—" : <span className="text-muted-foreground italic">Hidden for privacy</span>}</div>
               <div className="text-xs text-muted-foreground mt-1">
                 {d.last_donation_date ? `Last: ${d.last_donation_date}` : "No donation yet"} • {d.eligible ? "Eligible" : "Deferred"}
               </div>
               {mine && (
                 <div className="flex gap-2 mt-3">
-                  <Button size="sm" variant="outline" onClick={() => setEdit(d)}><Pencil className="h-3 w-3 mr-1"/>Edit</Button>
+                  <Button size="sm" variant="outline" onClick={async () => {
+                    const { data } = await supabase.rpc("get_my_donor_phone", { _donor_id: d.id });
+                    setEdit({ ...d, phone: data ?? "" });
+                  }}><Pencil className="h-3 w-3 mr-1"/>Edit</Button>
                   <Button size="sm" variant="ghost" onClick={() => del(d.id)} className="text-destructive"><Trash2 className="h-3 w-3 mr-1"/>Delete</Button>
                 </div>
               )}
